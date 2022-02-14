@@ -1,0 +1,5 @@
+﻿Contratos.
+
+Incluye las interfaces que representen la abstraccion de la implementacion 
+de los casos de uso.
+Recordar que los contratos son las "Interfaces".

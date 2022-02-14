@@ -1,0 +1,7 @@
+﻿Features.
+
+Este folder aplicara el patron de diseño CQRS "Command Query Responsability Segregation", para 
+manejar los casos de uso "UC".
+
+Dependiendo del caso de uso, podemos crear un sub-folder dentro de esta carpeta para describir 
+el proceso a implementar.

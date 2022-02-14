@@ -1,0 +1,7 @@
+﻿Comportamiento.
+
+Este se aplicara durante la aplicacion del caso de uso "UC".
+
+Por ejemplo:
+- Validacion de Datos.
+- Log's de transacciones.
