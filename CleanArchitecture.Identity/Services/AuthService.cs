@@ -3,6 +3,7 @@ using CleanArchitecture.Application.Contracts.Identity;
 using CleanArchitecture.Application.Models.Identity;
 using CleanArchitecture.Identity.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,11 +17,11 @@ namespace CleanArchitecture.Identity.Services
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly JwtSettings jwtSettings;
 
-        public AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, JwtSettings jwtSettings)
+        public AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<JwtSettings> jwtSettings)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.jwtSettings = jwtSettings;
+            this.jwtSettings = jwtSettings.Value;
         }
 
         public async Task<AuthResponse> LogIn(AuthRequest request)
@@ -29,7 +30,7 @@ namespace CleanArchitecture.Identity.Services
 
             if (user == null) throw new Exception($"El usuario con email { request.Email }, no existe");
 
-            var result = await signInManager.PasswordSignInAsync(user.UserName, user.PasswordHash, false, lockoutOnFailure: false);
+            var result = await signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
 
             if (!result.Succeeded) throw new Exception($"Las credenciales son incorrectas");
 
