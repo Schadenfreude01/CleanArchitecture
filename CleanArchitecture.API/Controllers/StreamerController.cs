@@ -20,7 +20,7 @@ namespace CleanArchitecture.API.Controllers
         }
 
         [HttpPost(Name = "Create")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         [ProducesResponseType((int)HttpStatusCode.OK )]
         public async Task<ActionResult<int>> Create([FromBody] CreateStreamerCommand command)
         {

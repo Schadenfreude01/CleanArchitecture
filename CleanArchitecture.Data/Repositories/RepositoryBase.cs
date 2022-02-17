@@ -25,12 +25,6 @@ namespace CleanArchitecture.Infrastructure.Repositories
             return entity;
         }
 
-        public async Task DeleteAsync(T entity)
-        {
-            context.Set<T>().Remove(entity);
-            await context.SaveChangesAsync();
-        }
-
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await context.Set<T>().ToListAsync();
@@ -72,10 +66,32 @@ namespace CleanArchitecture.Infrastructure.Repositories
 
         public async Task<T> UpdateAsync(T entity)
         {
+            context.Set<T>().Attach(entity);
             context.Entry(entity).State = EntityState.Modified;
             await context.SaveChangesAsync();
 
             return entity;
+        }
+
+        public void AddEntity(T entity)
+        {
+            context.Set<T>().Add(entity);
+        }
+
+        public async Task DeleteAsync(T entity)
+        {
+            context.Set<T>().Remove(entity);
+            await context.SaveChangesAsync();
+        }
+
+        public void DeleteEntity(T entity)
+        {
+            context.Set<T>().Remove(entity);
+        }
+        public void UpdateEntity(T entity)
+        {
+            context.Set<T>().Attach(entity);
+            context.Entry(entity).State = EntityState.Modified;
         }
 
         #endregion

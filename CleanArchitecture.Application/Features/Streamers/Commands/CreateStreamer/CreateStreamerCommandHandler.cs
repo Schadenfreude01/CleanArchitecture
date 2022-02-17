@@ -10,15 +10,17 @@ namespace CleanArchitecture.Application.Features.Streamers.Commands
 {
     public class CreateStreamerCommandHandler : IRequestHandler<CreateStreamerCommand, int>
     {
-        private readonly IStreamerRepository streamerRepository;
+        //private readonly IStreamerRepository streamerRepository;
+        private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
         private readonly IEmailService emailService;
         private readonly ILogger<CreateStreamerCommandHandler> logger;
 
-        public CreateStreamerCommandHandler(IMapper mapper, IStreamerRepository streamerRepository, IEmailService emailService, ILogger<CreateStreamerCommandHandler> logger)
+        public CreateStreamerCommandHandler(/* IStreamerRepository streamerRepository, */ IUnitOfWork uow, IMapper mapper, IEmailService emailService, ILogger<CreateStreamerCommandHandler> logger)
         {
+            //this.streamerRepository = streamerRepository;
+            this.uow = uow;
             this.mapper = mapper;
-            this.streamerRepository = streamerRepository;
             this.emailService = emailService;
             this.logger = logger;
         }
@@ -26,12 +28,21 @@ namespace CleanArchitecture.Application.Features.Streamers.Commands
         public async Task<int> Handle(CreateStreamerCommand request, CancellationToken cancellationToken)
         {
             var streamer = mapper.Map<Streamer>(request);
-            var newStreamer = await streamerRepository.AddAsync(streamer);
 
-            logger.LogInformation($"Streamer { newStreamer.Id }, creado exitosamente");
+            //var newStreamer = await streamerRepository.AddAsync(streamer);
+            uow.StreamerRepository.AddEntity(streamer);
+
+            var result = await uow.Complete();
+
+            if (result <= 0) throw new Exception($"No se pudo insertar el record de streamer");
+
+            //logger.LogInformation($"Streamer { newStreamer.Id }, creado exitosamente");
+            logger.LogInformation($"Streamer { streamer.Id }, creado exitosamente");
+
             //await SendEmail(newStreamer);
 
-            return newStreamer.Id;
+            //return newStreamer.Id;
+            return streamer.Id;
         }
 
         private async Task SendEmail(Streamer streamer)

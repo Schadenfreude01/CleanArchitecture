@@ -18,7 +18,7 @@ namespace CleanArchitecture.API.Controllers
         }
 
         [HttpGet("{username}", Name = "GetByUserName")]
-        [Authorize]
+        //[Authorize]
         [ProducesResponseType(typeof(IEnumerable<VideosVM>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<VideosVM>>> GetByUserName(string username)
         {

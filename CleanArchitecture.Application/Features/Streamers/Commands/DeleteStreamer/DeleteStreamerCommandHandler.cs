@@ -9,20 +9,23 @@ namespace CleanArchitecture.Application.Features.Streamers.Commands.DeleteStream
 {
     public class DeleteStreamerCommandHandler : IRequestHandler<DeleteStreamerCommand>
     {
-        private readonly IStreamerRepository streamerRepository;
+        //private readonly IStreamerRepository streamerRepository;
+        private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
         private readonly ILogger<DeleteStreamerCommandHandler> logger;
 
-        public DeleteStreamerCommandHandler(IStreamerRepository streamerRepository, IMapper mapper, ILogger<DeleteStreamerCommandHandler> logger)
+        public DeleteStreamerCommandHandler(/*IStreamerRepository streamerRepository, */IMapper mapper, ILogger<DeleteStreamerCommandHandler> logger, IUnitOfWork uow)
         {
-            this.streamerRepository = streamerRepository;
+            //this.streamerRepository = streamerRepository;
             this.mapper = mapper;
             this.logger = logger;
+            this.uow = uow;
         }
 
         public async Task<Unit> Handle(DeleteStreamerCommand request, CancellationToken cancellationToken)
         {
-            var streamerToDelete = await streamerRepository.GetByIdAsync(request.Id);
+            //var streamerToDelete = await streamerRepository.GetByIdAsync(request.Id);
+            var streamerToDelete = await uow.StreamerRepository.GetByIdAsync(request.Id);
 
             if (streamerToDelete == null)
             {
@@ -30,7 +33,10 @@ namespace CleanArchitecture.Application.Features.Streamers.Commands.DeleteStream
                 throw new NotFoundException(nameof(Streamer), request.Id);
             }
 
-            await streamerRepository.DeleteAsync(streamerToDelete);
+            //await streamerRepository.DeleteAsync(streamerToDelete);
+            uow.StreamerRepository.DeleteEntity(streamerToDelete);
+            await uow.Complete();
+
             logger.LogInformation($"El { request.Id } fue eliminado con exito");
 
             return Unit.Value;
