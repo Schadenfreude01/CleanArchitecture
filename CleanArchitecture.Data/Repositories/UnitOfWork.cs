@@ -21,6 +21,8 @@ namespace CleanArchitecture.Infrastructure.Repositories
             this.context = context;
         }
 
+        public StreamerDbContext StreamerDbContext => context;
+
         public async Task<int> Complete()
         {
             try
@@ -29,7 +31,7 @@ namespace CleanArchitecture.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception("Err");
+                throw new Exception("Err", ex);
             }
         }
 

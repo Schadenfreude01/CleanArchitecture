@@ -13,15 +13,15 @@ namespace CleanArchitecture.Application.Features.Streamers.Commands
         //private readonly IStreamerRepository streamerRepository;
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
-        private readonly IEmailService emailService;
+        //private readonly IEmailService emailService;
         private readonly ILogger<CreateStreamerCommandHandler> logger;
 
-        public CreateStreamerCommandHandler(/* IStreamerRepository streamerRepository, */ IUnitOfWork uow, IMapper mapper, IEmailService emailService, ILogger<CreateStreamerCommandHandler> logger)
+        public CreateStreamerCommandHandler(/* IStreamerRepository streamerRepository, */ IUnitOfWork uow, IMapper mapper, /*IEmailService emailService,*/ ILogger<CreateStreamerCommandHandler> logger)
         {
             //this.streamerRepository = streamerRepository;
             this.uow = uow;
             this.mapper = mapper;
-            this.emailService = emailService;
+            //this.emailService = emailService;
             this.logger = logger;
         }
 
@@ -45,24 +45,24 @@ namespace CleanArchitecture.Application.Features.Streamers.Commands
             return streamer.Id;
         }
 
-        private async Task SendEmail(Streamer streamer)
-        {
-            var email = new Email
-            {
-                To = "fabianalexis06@gmail.com",
-                Body = "El streamer fue ingresado correctamente",
-                Subject = "Mensaje de alerta"
-            };
+        //private async Task SendEmail(Streamer streamer)
+        //{
+        //    var email = new Email
+        //    {
+        //        To = "fabianalexis06@gmail.com",
+        //        Body = "El streamer fue ingresado correctamente",
+        //        Subject = "Mensaje de alerta"
+        //    };
 
-            try
-            {
-                await emailService.SendEmail(email);
-            }
-            catch (Exception)
-            {
-                logger.LogError($"Error al enviar el email de { streamer.Id }");
-                throw;
-            }
-        }
+        //    try
+        //    {
+        //        await emailService.SendEmail(email);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        logger.LogError($"Error al enviar el email de { streamer.Id }");
+        //        throw;
+        //    }
+        //}
     }
 }
