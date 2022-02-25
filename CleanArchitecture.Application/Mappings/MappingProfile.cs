@@ -11,7 +11,7 @@ namespace CleanArchitecture.Application.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<Video, VideosVM>();
+            CreateMap<Video, GetVideoListQueryResult>();
             CreateMap<CreateStreamerCommand, Streamer>();
             CreateMap<UpdateStreamerCommand, Streamer>();
             CreateMap<CreateDirectorCommand, Director>();

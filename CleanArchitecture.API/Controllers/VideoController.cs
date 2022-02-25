@@ -17,15 +17,22 @@ namespace CleanArchitecture.API.Controllers
             this.mediator = mediator;
         }
 
-        [HttpGet("{username}", Name = "GetByUserName")]
+        //[HttpGet("{username}", Name = "GetByUserName")]
+        [HttpGet(Name = "GetByUserName")]
         //[Authorize]
-        [ProducesResponseType(typeof(IEnumerable<VideosVM>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IEnumerable<VideosVM>>> GetByUserName(string username)
+        [ProducesResponseType(typeof(IEnumerable<GetVideoListQueryResult>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        //public async Task<ActionResult<IEnumerable<GetVideoListQueryResult>>> GetByUserName([FromQuery] string? username)
+        public async Task<ActionResult<IEnumerable<GetVideoListQueryResult>>> GetByUserName(string? username)
         {
             var query = new GetVideoListQuery(username);
             var videos = await mediator.Send(query);
 
             return Ok(videos);
+
+            //return videos.Count > 0 ? Ok(videos) : NoContent();
         }
 
         // Comentario

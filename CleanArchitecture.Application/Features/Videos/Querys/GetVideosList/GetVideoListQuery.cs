@@ -2,13 +2,18 @@
 
 namespace CleanArchitecture.Application.Features.Videos.Querys.GetVideosList
 {
-    public class GetVideoListQuery : IRequest<List<VideosVM>>
+    public class GetVideoListQuery : IRequest<List<GetVideoListQueryResult>>
     {
-        public GetVideoListQuery(string userName)
+        public GetVideoListQuery(string? userName)
         {
-            UserName = userName ?? throw new ArgumentNullException(nameof(userName));
+            UserName = userName;
         }
 
-        public string UserName { get; set; }
+        //public GetVideoListQuery(string userName)
+        //{
+        //    UserName = userName ?? throw new ArgumentNullException(nameof(userName));
+        //}
+
+        public string? UserName { get; set; }
     }
 }

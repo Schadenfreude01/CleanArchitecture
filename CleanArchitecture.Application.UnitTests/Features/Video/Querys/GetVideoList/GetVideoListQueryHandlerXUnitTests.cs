@@ -33,7 +33,7 @@ namespace CleanArchitecture.Application.UnitTests.Features.Video.Querys.GetVideo
             var request = new GetVideoListQuery("fabian.monzon");
             var result = await handler.Handle(request, CancellationToken.None );
 
-            result.ShouldBeOfType<List<VideosVM>>();
+            result.ShouldBeOfType<List<GetVideoListQueryResult>>();
 
             result.Count.ShouldBe(1);
 ;        }
